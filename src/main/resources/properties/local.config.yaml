@@ -1,0 +1,16 @@
+http:
+  host: "localhost"
+  port: "8081"
+  
+https:
+  host: "localhost"
+  port: "8082"
+  
+keystore:
+  type: "JKS"
+  path: "keystore/keystore-local.jks"
+  alias: ${secure::keystore.alias}
+  password: ${secure::keystore.password}
+
+ninja:
+  key: ${secure::ninja.key}

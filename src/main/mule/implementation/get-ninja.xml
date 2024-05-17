@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="7c53674d-46db-4b5b-8a72-d15e06dafc5b" basePath="/v1/" >
+		<http:request-connection protocol="HTTPS" host="api.api-ninjas.com" />
+		<http:default-headers >
+			<http:default-header key="X-Api-Key" value="${ninja.key}" />
+		</http:default-headers>
+	</http:request-config>
+	<sub-flow name="get-ninja" doc:id="197532ff-8f53-46a6-8031-8e3740a5a023" >
+		<set-variable value="#[attributes.uriParams.API]" doc:name="API" doc:id="1901973c-70ed-4ff1-8503-2a8a7ed3bc1a" variableName="API"/>
+		<ee:transform doc:name="Transform Message" doc:id="64cbad4e-8f75-4c11-b40f-07db85bd5ee3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="GET" doc:name="Request" doc:id="a82b7fb9-ea0c-489a-b28f-8e4960862564" config-ref="HTTP_Request_configuration" path="#[vars.API]">
+			<http:query-params ><![CDATA[#[payload]]]></http:query-params>
+		</http:request>
+	</sub-flow>
+</mule>

@@ -1,0 +1,17 @@
+whttp:
+  host: "0.0.0.0"
+  port: "8081"
+  
+https:
+  host: "0.0.0.0"
+  port: "8082"
+
+  
+keystore:
+  type: "JKS"
+  path: "keystore/keystore-dev.jks"
+  alias: "${secure::keystore.alias}"
+  password: "${secure::keystore.password}"
+  
+ninja:
+  key: ${secure::ninja.key}
